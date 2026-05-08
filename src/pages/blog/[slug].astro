@@ -1,0 +1,172 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { getBlogPosts, getBlogPostBySlug, urlFor } from '../../sanity/api';
+import { PortableText } from 'astro-portabletext';
+import { CONTACT } from '../../data/cities';
+
+export async function getStaticPaths() {
+  const posts = await getBlogPosts();
+  return posts.map((post) => ({
+    params: { slug: post.slug.current },
+  }));
+}
+
+const { slug } = Astro.params;
+const post = await getBlogPostBySlug(slug);
+
+if (!post) {
+  return Astro.redirect('/404');
+}
+
+const formattedDate = new Date(post.publishedAt).toLocaleDateString('en-IN', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+});
+---
+
+<BaseLayout
+  title={`${post.title} | PackersHub Blog`}
+  description={post.excerpt}
+  canonical={`https://packershub.in/blog/${post.slug.current}/`}
+>
+  <Header slot="header" />
+
+  <article class="bg-white">
+    <!-- Article Header -->
+    <header class="bg-hero-gradient pt-12 pb-16 md:pt-20 md:pb-24">
+      <div class="container max-w-4xl text-center">
+        <div class="flex items-center justify-center gap-3 mb-6 reveal">
+          {post.categories?.map(cat => (
+            <span class="tag-brand text-xs px-3 py-1">{cat.title}</span>
+          ))}
+          <span class="text-xs text-warm-500">• {post.readTime} min read</span>
+        </div>
+        
+        <h1 class="text-hero md:text-h1 font-display text-warm-950 mb-8 leading-tight reveal reveal-delay-1">
+          {post.title}
+        </h1>
+
+        <div class="flex items-center justify-center gap-4 reveal reveal-delay-2">
+          {post.author?.image && (
+            <img 
+              src={urlFor(post.author.image).width(100).height(100).url()} 
+              alt={post.author.name}
+              class="w-12 h-12 rounded-full border-2 border-white shadow-sm"
+            />
+          )}
+          <div class="text-left">
+            <p class="text-sm font-bold text-warm-900">{post.author?.name}</p>
+            <p class="text-xs text-warm-500">{post.author?.role} • {formattedDate}</p>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Image -->
+    <div class="container max-w-5xl -mt-10 md:-mt-16 mb-12 md:mb-20 reveal reveal-delay-3">
+      {post.mainImage && (
+        <img 
+          src={urlFor(post.mainImage).width(1200).height(675).url()} 
+          alt={post.title}
+          class="w-full aspect-video object-cover rounded-3xl shadow-float"
+        />
+      )}
+    </div>
+
+    <!-- Content -->
+    <div class="container max-w-4xl pb-20">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+        <!-- Sidebar/Share (Optional) -->
+        <aside class="hidden lg:block lg:col-span-1">
+          <div class="sticky top-32 flex flex-col gap-4">
+            <span class="text-[10px] font-bold uppercase tracking-widest text-warm-400 transform -rotate-90 origin-left translate-x-3 mb-8">Share Post</span>
+            <!-- Add social share icons here if needed -->
+          </div>
+        </aside>
+
+        <!-- Body Content -->
+        <div class="lg:col-span-10 prose prose-lg prose-warm max-w-none prose-headings:font-display prose-headings:text-warm-950 prose-a:text-brand-600 prose-img:rounded-2xl">
+          {post.body && <PortableText value={post.body} />}
+        </div>
+      </div>
+
+      <!-- Author Bio -->
+      <div class="mt-20 p-8 md:p-12 bg-warm-50 rounded-3xl border border-warm-200 flex flex-col md:flex-row gap-8 items-start">
+        {post.author?.image && (
+          <img 
+            src={urlFor(post.author.image).width(200).height(200).url()} 
+            alt={post.author.name}
+            class="w-24 h-24 md:w-32 md:h-32 rounded-2xl object-cover shadow-sm"
+          />
+        )}
+        <div>
+          <h3 class="font-display text-h3 text-warm-950 mb-2">About the Author</h3>
+          <p class="font-bold text-brand-600 mb-4">{post.author?.name} — {post.author?.role}</p>
+          <div class="text-warm-600 leading-relaxed mb-6">
+            {post.author?.bio && <PortableText value={post.author.bio} />}
+          </div>
+          {post.author?.social && (
+            <div class="flex gap-4">
+              {post.author.social.linkedin && (
+                <a href={post.author.social.linkedin} class="text-warm-400 hover:text-brand-600 transition-colors">LinkedIn</a>
+              )}
+              {post.author.social.twitter && (
+                <a href={post.author.social.twitter} class="text-warm-400 hover:text-brand-600 transition-colors">Twitter</a>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+
+    <!-- Related Posts -->
+    {post.relatedPosts && post.relatedPosts.length > 0 && (
+      <section class="section bg-warm-50 border-t border-warm-200">
+        <div class="container">
+          <div class="flex justify-between items-end mb-10">
+            <div>
+              <div class="section-badge mb-3">Keep Reading</div>
+              <h2 class="section-title">Related Articles</h2>
+            </div>
+            <a href="/blog/" class="btn-ghost mb-2">View All Posts →</a>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {post.relatedPosts.map(rel => (
+              <a href={`/blog/${rel.slug.current}/`} class="group">
+                <div class="aspect-video rounded-2xl overflow-hidden mb-4 shadow-sm border border-warm-200">
+                  {rel.mainImage && (
+                    <img 
+                      src={urlFor(rel.mainImage).width(600).height(338).url()} 
+                      alt={rel.title}
+                      class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                  )}
+                </div>
+                <h3 class="font-semibold text-warm-900 group-hover:text-brand-600 transition-colors line-clamp-2">{rel.title}</h3>
+                <p class="text-xs text-warm-400 mt-2">{new Date(rel.publishedAt).toLocaleDateString('en-IN', {day: 'numeric', month: 'long'})}</p>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+    )}
+  </article>
+
+  <!-- CTA -->
+  <section class="section-sm bg-brand-50">
+    <div class="container text-center reveal">
+      <h2 class="font-display text-h3 text-warm-950 mb-4">Moving Soon?</h2>
+      <p class="text-warm-600 mb-6">Get a professional, stress-free moving experience with South India's top-rated packers.</p>
+      <div class="flex flex-wrap gap-3 justify-center">
+        <a href="/get-quote/" class="btn-primary-lg">Get Free Quote</a>
+        <a href={`tel:${CONTACT.phone}`} class="btn-outline px-8 py-4 text-base rounded-2xl">📞 {CONTACT.phoneDisplay}</a>
+      </div>
+    </div>
+  </section>
+
+  <Footer slot="footer" />
+</BaseLayout>

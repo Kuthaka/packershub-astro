@@ -1,23 +1,13 @@
 ---
-// src/pages/blog/index.astro
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
+import { getBlogPosts, getCategories, urlFor } from '../../sanity/api';
 import { CONTACT } from '../../data/cities';
 
-const posts = [
-  { slug: 'how-to-choose-packers-movers', title: 'How to Choose the Best Packers and Movers in South India', excerpt: 'A complete guide to selecting a reliable, licensed, and affordable moving company in AP, Telangana, TN, Karnataka, and Kerala.', date: '2026-04-15', category: 'Moving Tips', readTime: '8 min', image: '📦' },
-  { slug: 'home-shifting-cost-guide', title: 'Complete Home Shifting Cost Guide 2026 — South India', excerpt: 'Detailed breakdown of packing and moving costs for 1 BHK, 2 BHK, 3 BHK, and villas. Know exactly what you\'ll pay.', date: '2026-04-10', category: 'Cost Guide', readTime: '10 min', image: '💰' },
-  { slug: 'office-relocation-checklist', title: 'Office Relocation Checklist — 50 Things You Must Do', excerpt: 'Plan your corporate move with zero downtime. Complete pre-move, move-day, and post-move checklist for businesses.', date: '2026-04-05', category: 'Office Moving', readTime: '12 min', image: '🏢' },
-  { slug: 'car-transport-guide', title: 'Car Transport by Packers and Movers — Complete Guide 2026', excerpt: 'Everything about safe car shipping: enclosed vs open carrier, insurance, documentation, and what to expect.', date: '2026-03-28', category: 'Vehicle Transport', readTime: '7 min', image: '🚗' },
-  { slug: 'packing-tips-household', title: '25 Expert Packing Tips for a Smooth Household Move', excerpt: 'Professional packing secrets from our expert crew. How to pack kitchen, bedroom, electronics, and fragile items safely.', date: '2026-03-20', category: 'Packing Tips', readTime: '9 min', image: '🛋️' },
-  { slug: 'iba-approved-movers-guide', title: 'Why IBA-Approved Packers and Movers Matter for Bank Employees', excerpt: 'Understanding IBA (Indian Banks\' Association) approved moving companies and how to claim reimbursement.', date: '2026-03-15', category: 'IBA Guide', readTime: '6 min', image: '🏦' },
-  { slug: 'hyderabad-to-bengaluru-moving', title: 'Moving from Hyderabad to Bengaluru — Complete 2026 Guide', excerpt: 'Route info, costs, duration, best movers, and tips for the popular Hyderabad–Bengaluru relocation corridor.', date: '2026-03-10', category: 'City Guides', readTime: '8 min', image: '🛣️' },
-  { slug: 'monsoon-shifting-tips', title: 'Monsoon Moving Tips — How to Shift Safely in Rainy Season', excerpt: 'Special precautions for South India\'s monsoon season. Waterproofing, scheduling, and protecting your goods in rain.', date: '2026-03-05', category: 'Moving Tips', readTime: '6 min', image: '🌧️' },
-  { slug: 'storage-solutions-guide', title: 'Warehouse Storage Solutions — Short & Long Term Guide', excerpt: 'When and why to use storage during relocation. Costs, security, and how to choose the right storage facility.', date: '2026-02-28', category: 'Storage', readTime: '7 min', image: '🏭' },
-];
-
-const categories = ['All', 'Moving Tips', 'Cost Guide', 'Office Moving', 'Vehicle Transport', 'Packing Tips', 'City Guides', 'Storage'];
+const posts = await getBlogPosts();
+const allCategories = await getCategories();
+const categories = ['All', ...allCategories.map(cat => cat.title)];
 ---
 
 <BaseLayout
@@ -51,21 +41,31 @@ const categories = ['All', 'Moving Tips', 'Cost Guide', 'Office Moving', 'Vehicl
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
         {posts.map((post, i) => (
           <article class={`card overflow-hidden group reveal reveal-delay-${(i%3)+1}`}>
-            <div class="bg-brand-50 h-40 flex items-center justify-center text-6xl border-b border-warm-100">
-              {post.image}
+            <div class="bg-brand-50 h-56 overflow-hidden border-b border-warm-100">
+              {post.mainImage && (
+                <img 
+                  src={urlFor(post.mainImage).width(600).height(400).url()} 
+                  alt={post.title}
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+              )}
             </div>
             <div class="p-6">
               <div class="flex items-center gap-3 mb-3">
-                <span class="tag-brand text-xs">{post.category}</span>
-                <span class="text-xs text-warm-400">{post.readTime} read</span>
+                {post.categories && post.categories.length > 0 && (
+                  <span class="tag-brand text-xs">{post.categories[0].title}</span>
+                )}
+                <span class="text-xs text-warm-400">{post.readTime} min read</span>
               </div>
               <h2 class="font-semibold text-warm-950 mb-2 group-hover:text-brand-600 transition-colors line-clamp-2 leading-snug">
-                <a href={`/blog/${post.slug}/`}>{post.title}</a>
+                <a href={`/blog/${post.slug.current}/`}>{post.title}</a>
               </h2>
               <p class="text-sm text-warm-600 leading-relaxed mb-4 line-clamp-3">{post.excerpt}</p>
               <div class="flex items-center justify-between">
-                <span class="text-xs text-warm-400">{new Date(post.date).toLocaleDateString('en-IN', {day: 'numeric', month: 'long', year: 'numeric'})}</span>
-                <a href={`/blog/${post.slug}/`} class="text-brand-600 text-sm font-semibold hover:underline">Read More →</a>
+                <span class="text-xs text-warm-400">
+                  {new Date(post.publishedAt).toLocaleDateString('en-IN', {day: 'numeric', month: 'long', year: 'numeric'})}
+                </span>
+                <a href={`/blog/${post.slug.current}/`} class="text-brand-600 text-sm font-semibold hover:underline">Read More →</a>
               </div>
             </div>
           </article>
