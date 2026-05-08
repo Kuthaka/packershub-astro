@@ -1,0 +1,147 @@
+---
+// src/pages/contact/index.astro
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { CONTACT, states } from '../../data/cities';
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'ContactPage',
+  name: 'Contact PackersHub',
+  url: 'https://packershub.in/contact/',
+  mainEntity: {
+    '@type': 'MovingCompany',
+    name: 'PackersHub',
+    telephone: CONTACT.phone,
+    email: CONTACT.email,
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: 'BV Nagar',
+      addressLocality: 'Nellore',
+      addressRegion: 'Andhra Pradesh',
+      postalCode: '524004',
+      addressCountry: 'IN',
+    },
+  },
+};
+---
+
+<BaseLayout
+  title="Contact PackersHub | Call, WhatsApp or Visit — +91 77310 74075"
+  description="Contact PackersHub for packers and movers service. Call +917731074075 or WhatsApp us. Office at BV Nagar, Nellore, AP. Available Mon–Sun 6 AM to 10 PM."
+  canonical="https://packershub.in/contact/"
+  schema={schema}
+>
+  <Header slot="header" />
+
+  <section class="bg-hero-gradient py-16 md:py-20">
+    <div class="container">
+      <div class="text-center mb-12 reveal">
+        <div class="section-badge mb-4">Reach Us</div>
+        <h1 class="font-display text-h1 text-warm-950 mb-4">Contact PackersHub</h1>
+        <p class="text-body-lg text-warm-600">We're available 7 days a week, 6 AM to 10 PM. Reach us by phone, WhatsApp, or email.</p>
+      </div>
+
+      <div class="grid lg:grid-cols-3 gap-8">
+        <!-- Contact Info -->
+        <div class="space-y-5 lg:col-span-1">
+          {[
+            { icon: '📞', title: 'Primary Phone', value: '+91 77310 74075', href: 'tel:+917731074075', sub: 'Call or WhatsApp' },
+            { icon: '📞', title: 'Secondary Phone', value: '+91 77309 12913', href: 'tel:+917730912913', sub: 'Alternate number' },
+            { icon: '💬', title: 'WhatsApp', value: 'Chat on WhatsApp', href: CONTACT.whatsappLink(), sub: 'Quick response' },
+            { icon: '📧', title: 'Email', value: 'info@packershub.in', href: 'mailto:info@packershub.in', sub: 'Business inquiries' },
+            { icon: '📍', title: 'Headquarters', value: 'BV Nagar, Nellore, AP 524004', href: CONTACT.mapLink, sub: 'Visit us' },
+            { icon: '🕐', title: 'Working Hours', value: 'Mon – Sun: 6 AM – 10 PM', href: null, sub: 'All days including holidays' },
+          ].map(c => (
+            <div class="card p-5 reveal">
+              <div class="flex items-start gap-4">
+                <div class="text-2xl">{c.icon}</div>
+                <div>
+                  <div class="text-xs text-warm-400 font-medium mb-0.5">{c.title}</div>
+                  {c.href ? (
+                    <a href={c.href} target={c.href.startsWith('http') ? '_blank' : undefined} rel="noopener" class="font-semibold text-warm-950 hover:text-brand-600 transition-colors text-sm">{c.value}</a>
+                  ) : (
+                    <div class="font-semibold text-warm-950 text-sm">{c.value}</div>
+                  )}
+                  <div class="text-xs text-warm-400 mt-0.5">{c.sub}</div>
+                </div>
+              </div>
+            </div>
+          ))}
+
+          <!-- State offices -->
+          <div class="card p-5 reveal">
+            <div class="text-xs text-warm-400 font-medium mb-3">State Operations</div>
+            {Object.values(states).map(s => (
+              <div class="flex items-center gap-2 py-2 border-b border-warm-100 last:border-0">
+                <span class="w-7 h-7 rounded text-white text-[10px] font-bold flex items-center justify-center flex-shrink-0" style={`background:${s.color}`}>{s.code}</span>
+                <div>
+                  <div class="text-xs font-semibold text-warm-900">{s.name}</div>
+                  <div class="text-xs text-warm-400">{s.cities} cities • {s.capital}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <!-- Contact Form -->
+        <div class="lg:col-span-2">
+          <div class="card p-8 reveal reveal-delay-1">
+            <h2 class="font-semibold text-xl text-warm-950 mb-6">Send Us a Message</h2>
+            <form class="space-y-5" action="https://formsubmit.co/info@packershub.in" method="POST">
+              <input type="hidden" name="_subject" value="Contact Message — PackersHub Website" />
+              <input type="hidden" name="_captcha" value="false" />
+              <input type="hidden" name="_next" value="https://packershub.in/thank-you/" />
+
+              <div class="grid grid-cols-2 gap-4">
+                <div>
+                  <label class="label">Your Name *</label>
+                  <input type="text" name="name" class="input text-sm" placeholder="Full name" required />
+                </div>
+                <div>
+                  <label class="label">Phone *</label>
+                  <input type="tel" name="phone" class="input text-sm" placeholder="+91 XXXXX XXXXX" required />
+                </div>
+              </div>
+              <div>
+                <label class="label">Email</label>
+                <input type="email" name="email" class="input text-sm" placeholder="you@example.com" />
+              </div>
+              <div>
+                <label class="label">Subject *</label>
+                <select name="subject" class="select text-sm" required>
+                  <option value="">Select subject</option>
+                  <option>Get Moving Quote</option>
+                  <option>Track My Shipment</option>
+                  <option>Feedback / Complaint</option>
+                  <option>Business Partnership</option>
+                  <option>Other</option>
+                </select>
+              </div>
+              <div>
+                <label class="label">Message *</label>
+                <textarea name="message" class="input text-sm h-32 resize-none" placeholder="Tell us how we can help you..." required></textarea>
+              </div>
+              <button type="submit" class="btn-primary w-full py-4 text-base rounded-xl">Send Message →</button>
+            </form>
+          </div>
+
+          <!-- Map placeholder -->
+          <div class="card mt-6 overflow-hidden reveal reveal-delay-2">
+            <div class="bg-warm-100 h-48 flex items-center justify-center text-warm-500">
+              <div class="text-center">
+                <div class="text-4xl mb-3">📍</div>
+                <div class="font-semibold text-warm-700">PackersHub Headquarters</div>
+                <div class="text-sm text-warm-500">BV Nagar, Nellore, Andhra Pradesh — 524004</div>
+                <a href={CONTACT.mapLink} target="_blank" rel="noopener" class="inline-block mt-3 btn-outline text-xs px-4 py-2 rounded-xl">Open in Google Maps →</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <Footer slot="footer" />
+</BaseLayout>

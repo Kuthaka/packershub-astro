@@ -1,0 +1,137 @@
+---
+// src/pages/services/index.astro
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { CONTACT } from '../../data/cities';
+
+const services = [
+  {
+    icon: '🏠', slug: 'household-shifting', title: 'Household Shifting',
+    desc: 'Complete home relocation — 1 BHK to 5 BHK villas. Expert packing, safe transit, and full unpacking service.',
+    features: ['Professional packing team', 'Heavy furniture disassembly & reassembly', 'Fragile & antique item care', 'Door-to-door delivery', 'Transit insurance included'],
+    price: 'Starting ₹3,000',
+  },
+  {
+    icon: '🏢', slug: 'office-relocation', title: 'Office Relocation',
+    desc: 'Minimal-downtime corporate moves. IT equipment, workstations, furniture, server rooms — all handled professionally.',
+    features: ['Pre-move planning & survey', 'IT equipment specialist handling', 'Overnight moves available', 'Asset labeling & inventory', 'Post-move setup assistance'],
+    price: 'Starting ₹8,000',
+  },
+  {
+    icon: '🚗', slug: 'car-transport', title: 'Car Transport',
+    desc: 'Safe door-to-door car shifting using enclosed and open carriers. All car types — hatchbacks, sedans, SUVs, luxury, vintage.',
+    features: ['Enclosed & open carrier options', 'Pre-move car inspection', 'GPS-tracked vehicles', 'Zero scratch guarantee', 'Full insurance coverage'],
+    price: 'Starting ₹5,000',
+  },
+  {
+    icon: '🏍️', slug: 'bike-transport', title: 'Bike Transport',
+    desc: 'Professional two-wheeler shifting for scooters, motorcycles, sports bikes. Secure packaging and timely delivery.',
+    features: ['Petrol tank draining', 'Secure tie-down fastening', 'Foam & bubble wrap packing', 'GPS tracking', 'Insurance coverage'],
+    price: 'Starting ₹2,000',
+  },
+  {
+    icon: '📦', slug: 'storage', title: 'Warehouse Storage',
+    desc: '24/7 secured climate-controlled storage facilities. Short-term and long-term options with easy retrieval.',
+    features: ['CCTV surveillance 24/7', 'Climate-controlled units', 'Fire & pest protection', 'Monthly rental options', 'Easy access & retrieval'],
+    price: 'Starting ₹1,500/month',
+  },
+  {
+    icon: '🌍', slug: 'international', title: 'International Moving',
+    desc: 'End-to-end overseas relocation. Customs documentation, air & sea freight, and delivery at your foreign destination.',
+    features: ['Customs clearance assistance', 'Air & sea freight options', 'Documentation support', 'Insurance for overseas goods', 'Destination agent network'],
+    price: 'Custom quote',
+  },
+  {
+    icon: '📋', slug: 'packing', title: 'Packing Services',
+    desc: 'Professional packing using international-grade materials. Full pack, partial pack, or DIY supply options.',
+    features: ['Corrugated boxes & crates', 'Bubble wrap & foam sheets', 'Stretch film wrapping', 'Custom wooden crating', 'Specialty item packing'],
+    price: 'Starting ₹1,500',
+  },
+  {
+    icon: '💪', slug: 'loading-unloading', title: 'Loading & Unloading',
+    desc: 'Trained labour team for loading, unloading, and arranging your goods. Available standalone or as part of full shifting.',
+    features: ['Trained & verified labour', 'Heavy item specialists', 'Stair carry available', 'Fast & efficient teams', 'Hourly pricing available'],
+    price: 'Starting ₹800',
+  },
+];
+
+const schemaService = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  serviceType: 'Moving & Relocation',
+  provider: { '@type': 'MovingCompany', name: 'PackersHub', url: 'https://packershub.in' },
+  areaServed: 'South India',
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: 'PackersHub Services',
+    itemListElement: services.map(s => ({
+      '@type': 'Offer',
+      itemOffered: { '@type': 'Service', name: s.title, description: s.desc },
+    })),
+  },
+};
+---
+
+<BaseLayout
+  title="Packers and Movers Services | PackersHub — Household, Office, Car & More"
+  description="Complete list of PackersHub services: household shifting, office relocation, car & bike transport, warehouse storage, international moving, and packing. Serving 75 cities in South India."
+  canonical="https://packershub.in/services/"
+  schema={schemaService}
+>
+  <Header slot="header" />
+
+  <section class="bg-hero-gradient py-16 md:py-20">
+    <div class="container text-center">
+      <div class="section-badge mb-5 reveal">What We Offer</div>
+      <h1 class="font-display text-h1 text-warm-950 mb-4 reveal reveal-delay-1">Our Relocation Services</h1>
+      <p class="text-body-lg text-warm-600 max-w-2xl mx-auto reveal reveal-delay-2">From a single item to an entire office campus — PackersHub has you covered with 8 specialist moving services across South India.</p>
+    </div>
+  </section>
+
+  <section class="section bg-white">
+    <div class="container">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-7">
+        {services.map((s, i) => (
+          <div class={`card p-8 reveal reveal-delay-${(i%2)+1}`}>
+            <div class="flex items-start gap-5">
+              <div class="text-4xl flex-shrink-0">{s.icon}</div>
+              <div class="flex-1">
+                <div class="flex items-center justify-between mb-2 flex-wrap gap-2">
+                  <h2 class="font-display text-xl text-warm-950">{s.title}</h2>
+                  <span class="tag-brand text-xs font-bold">{s.price}</span>
+                </div>
+                <p class="text-sm text-warm-600 leading-relaxed mb-4">{s.desc}</p>
+                <ul class="space-y-1.5 mb-5">
+                  {s.features.map(f => (
+                    <li class="flex items-center gap-2 text-sm text-warm-700">
+                      <svg class="w-4 h-4 text-brand-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+                <div class="flex gap-2 flex-wrap">
+                  <a href="/get-quote/" class="btn-primary text-xs px-4 py-2.5 rounded-xl">Get Quote</a>
+                  <a href={CONTACT.whatsappLink(`Hi! I need ${s.title} service.`)} target="_blank" rel="noopener" class="btn-whatsapp text-xs px-4 py-2.5 rounded-xl">WhatsApp</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section-sm bg-brand-500 text-white">
+    <div class="container text-center reveal">
+      <h2 class="font-display text-h2 mb-4">Need a Custom Solution?</h2>
+      <p class="text-brand-100 text-body-lg mb-8 max-w-xl mx-auto">We handle complex, multi-city, and high-value relocations. Call us to discuss your specific requirements.</p>
+      <div class="flex flex-wrap gap-3 justify-center">
+        <a href="/get-quote/" class="btn-white px-8 py-4 text-base rounded-2xl">Get Free Quote</a>
+        <a href="tel:+917731074075" class="border-2 border-white/40 text-white hover:bg-white/10 px-8 py-4 text-base rounded-2xl font-semibold transition-all inline-flex items-center gap-2">📞 {CONTACT.phoneDisplay}</a>
+      </div>
+    </div>
+  </section>
+
+  <Footer slot="footer" />
+</BaseLayout>

@@ -1,0 +1,22 @@
+{
+  "name": "PackersHub — South India Packers & Movers",
+  "short_name": "PackersHub",
+  "description": "Trusted packers and movers across 75 cities in South India",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#f97316",
+  "orientation": "portrait-primary",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Get Free Quote", "url": "/get-quote/", "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Call Us", "url": "tel:+917731074075" }
+  ],
+  "categories": ["business", "utilities"],
+  "lang": "en-IN",
+  "dir": "ltr"
+}

@@ -1,0 +1,182 @@
+---
+// src/pages/[stateSlug].astro — 5 State landing pages
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { states, cities, getCitiesByState, CONTACT, type StateKey } from '../data/cities';
+
+export async function getStaticPaths() {
+  return Object.values(states).map(state => ({
+    params: { stateSlug: state.slug },
+    props: { state },
+  }));
+}
+
+const { state } = Astro.props;
+const stateCities = getCitiesByState(state.code as StateKey);
+
+const stateSchema = {
+  '@context': 'https://schema.org',
+  '@type': ['MovingCompany', 'LocalBusiness'],
+  name: `PackersHub - Packers and Movers in ${state.name}`,
+  url: `https://packershub.in/${state.slug}/`,
+  telephone: CONTACT.phone,
+  description: state.metaDescription,
+  areaServed: { '@type': 'State', name: state.name, containedInPlace: { '@type': 'Country', name: 'India' } },
+  aggregateRating: { '@type': 'AggregateRating', ratingValue: '4.8', reviewCount: '5000', bestRating: '5' },
+};
+---
+
+<BaseLayout
+  title={state.metaTitle}
+  description={state.metaDescription}
+  canonical={`https://packershub.in/${state.slug}/`}
+  schema={stateSchema}
+  stateName={state.name}
+>
+  <Header slot="header" />
+
+  <!-- Breadcrumb -->
+  <nav class="bg-warm-50 border-b border-warm-100 py-3">
+    <div class="container">
+      <ol class="flex items-center gap-2 text-xs text-warm-500">
+        <li><a href="/" class="hover:text-brand-600">Home</a></li>
+        <li class="text-warm-300">›</li>
+        <li class="text-warm-800 font-medium">Packers Movers {state.name}</li>
+      </ol>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="relative py-20 md:py-28 overflow-hidden" style={`background: linear-gradient(135deg, white 0%, ${state.color}08 100%)`}>
+    <div class="absolute inset-0 bg-grid opacity-40"></div>
+    <div class="container relative">
+      <div class="max-w-3xl">
+        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest border mb-6 reveal" style={`color:${state.color}; background:${state.color}12; border-color:${state.color}30`}>
+          {state.code} • {state.cities} Cities
+        </div>
+        <h1 class="font-display text-h1 text-warm-950 mb-5 reveal reveal-delay-1">
+          Packers and Movers in {state.name}
+        </h1>
+        <p class="text-body-lg text-warm-600 mb-8 max-w-2xl reveal reveal-delay-2 text-pretty">
+          PackersHub provides trusted, professional packers and movers services across all major cities in {state.name}. Licensed, insured, and committed to making your relocation stress-free.
+        </p>
+
+        <!-- State highlights -->
+        <div class="grid grid-cols-2 gap-3 mb-8 max-w-xl reveal reveal-delay-3">
+          {state.highlights.map(h => (
+            <div class="flex items-center gap-2 text-sm text-warm-700">
+              <svg class="w-4 h-4 flex-shrink-0" fill="currentColor" style={`color:${state.color}`} viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+              {h}
+            </div>
+          ))}
+        </div>
+
+        <div class="flex flex-wrap gap-3 reveal reveal-delay-4">
+          <a href="/get-quote/" class="btn-primary-lg">Get Free Quote</a>
+          <a href={CONTACT.whatsappLink(`Hi! I need packers and movers in ${state.name}.`)} target="_blank" rel="noopener" class="btn-whatsapp px-7 py-4 text-base rounded-2xl">WhatsApp Us</a>
+          <a href="tel:+917731074075" class="btn-outline px-7 py-4 text-base rounded-2xl">📞 Call Now</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- All Cities Grid -->
+  <section class="section bg-warm-50">
+    <div class="container">
+      <div class="text-center mb-12 reveal">
+        <div class="section-badge mb-4">Coverage</div>
+        <h2 class="section-title mb-4">All {state.name} Cities We Serve</h2>
+        <p class="section-subtitle">Professional packers and movers in all {state.cities} major cities of {state.name}.</p>
+      </div>
+
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+        {stateCities.map((city, i) => (
+          <a href={`/${city.slug}/`} class={`card p-5 text-center group hover:border-brand-300 reveal reveal-delay-${(i%5)+1}`}>
+            <div class="w-10 h-10 rounded-xl flex items-center justify-center text-white text-xs font-bold mx-auto mb-3 group-hover:scale-110 transition-transform" style={`background:${state.color}`}>
+              {city.name.substring(0, 2).toUpperCase()}
+            </div>
+            <div class="font-semibold text-sm text-warm-950 group-hover:text-brand-600 transition-colors">{city.name}</div>
+            <div class="text-xs text-warm-400 mt-0.5">{city.district}</div>
+            <div class="text-xs font-semibold mt-2 group-hover:underline" style={`color:${state.color}`}>View →</div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Why PackersHub in State -->
+  <section class="section bg-white">
+    <div class="container">
+      <div class="grid lg:grid-cols-2 gap-12 items-center">
+        <div class="reveal">
+          <div class="section-badge mb-5">About Our Service</div>
+          <h2 class="section-title mb-5">Why Choose PackersHub in {state.name}?</h2>
+          <p class="text-warm-600 mb-6 leading-relaxed">PackersHub has been serving {state.name} with professional relocation services across all major cities. Our deep understanding of {state.name}'s geography, traffic patterns, and local logistics makes us the go-to choice for thousands of families and businesses.</p>
+
+          <div class="space-y-4">
+            {[
+              `Local expertise across all ${state.cities} cities in ${state.name}`,
+              'GPS-tracked vehicles for complete shipment visibility',
+              'Comprehensive transit insurance on every move',
+              'Trained, background-verified packing crew',
+              'Transparent pricing — no hidden charges',
+              '7-day a week availability including holidays',
+            ].map(item => (
+              <div class="flex items-center gap-3 text-sm text-warm-700">
+                <div class="w-5 h-5 bg-brand-100 rounded-full flex items-center justify-center flex-shrink-0">
+                  <svg class="w-3 h-3 text-brand-600" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                </div>
+                {item}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div class="card p-8 reveal reveal-delay-2">
+          <h3 class="font-semibold text-lg text-warm-950 mb-5">Get a Free Quote for {state.name}</h3>
+          <form action="/get-quote/" method="GET" class="space-y-4">
+            <div>
+              <label class="label">Moving From (City in {state.name}) *</label>
+              <input type="text" name="from" placeholder="Your current city" class="input text-sm" required />
+            </div>
+            <div>
+              <label class="label">Moving To *</label>
+              <input type="text" name="to" placeholder="Destination city" class="input text-sm" required />
+            </div>
+            <div>
+              <label class="label">Move Type *</label>
+              <select name="type" class="select text-sm" required>
+                <option value="">Select move type</option>
+                <option>Household Shifting</option>
+                <option>Office Relocation</option>
+                <option>Car Transport</option>
+                <option>Bike Transport</option>
+                <option>Storage</option>
+              </select>
+            </div>
+            <div>
+              <label class="label">Your Phone *</label>
+              <input type="tel" name="phone" placeholder="+91 XXXXX XXXXX" class="input text-sm" required />
+            </div>
+            <button type="submit" class="btn-primary w-full py-4 rounded-xl">Get Free Quote →</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="py-14 text-white" style={`background:${state.color}`}>
+    <div class="container text-center reveal">
+      <h2 class="font-display text-h2 mb-4">Move Anywhere in {state.name}</h2>
+      <p class="text-white/80 text-body-lg mb-8 max-w-xl mx-auto">Professional packers and movers covering every corner of {state.name}.</p>
+      <div class="flex flex-wrap gap-3 justify-center">
+        <a href="/get-quote/" class="btn-white px-8 py-4 text-base rounded-2xl">Get Free Quote</a>
+        <a href="tel:+917731074075" class="border-2 border-white/40 text-white hover:bg-white/10 px-8 py-4 text-base rounded-2xl font-semibold transition-all inline-flex items-center gap-2">📞 {CONTACT.phoneDisplay}</a>
+      </div>
+    </div>
+  </section>
+
+  <Footer slot="footer" />
+</BaseLayout>

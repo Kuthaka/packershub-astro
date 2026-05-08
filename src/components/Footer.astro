@@ -1,0 +1,222 @@
+---
+// src/components/Footer.astro
+import { CONTACT, BUSINESS, states, cities, getCitiesByState } from '../data/cities';
+
+const apCities = getCitiesByState('AP').slice(0, 8);
+const tsCities = getCitiesByState('TS').slice(0, 5);
+const tnCities = getCitiesByState('TN').slice(0, 5);
+const kaCities = getCitiesByState('KA').slice(0, 5);
+const klCities = getCitiesByState('KL').slice(0, 5);
+---
+
+<footer class="bg-warm-950 text-warm-300">
+  <!-- Main Footer -->
+  <div class="container py-16">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+
+      <!-- Brand Column -->
+      <div class="lg:col-span-1">
+        <a href="/" class="flex items-center gap-2.5 mb-5">
+          <div class="w-10 h-10 bg-brand-gradient rounded-xl flex items-center justify-center shadow-brand">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+              <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M9 22V12h6v10" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <span class="font-display text-2xl text-white">PackersHub</span>
+        </a>
+        <p class="text-sm leading-relaxed text-warm-400 mb-6">
+          South India's most trusted packers and movers. Serving 75 cities across 5 states with professional, safe, and affordable relocation services since 2018.
+        </p>
+
+        <!-- Contact Info -->
+        <div class="space-y-3 text-sm">
+          <a href={CONTACT.callLink} class="flex items-center gap-2.5 hover:text-brand-400 transition-colors group">
+            <div class="w-8 h-8 bg-warm-800 rounded-lg flex items-center justify-center group-hover:bg-brand-500 transition-colors">
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+            </div>
+            <div>
+              <div class="text-white font-semibold">{CONTACT.phoneDisplay}</div>
+              <div class="text-xs text-warm-500">Primary Number</div>
+            </div>
+          </a>
+          <div class="flex items-center gap-2.5">
+            <div class="w-8 h-8 bg-warm-800 rounded-lg flex items-center justify-center">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+            </div>
+            <div>
+              <div class="text-white text-sm">BV Nagar, Nellore</div>
+              <div class="text-xs text-warm-500">Andhra Pradesh — 524004</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Social -->
+        <div class="flex gap-2 mt-6">
+          {[
+            { label: 'Facebook', icon: '<path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/>', href: '#' },
+            { label: 'Instagram', icon: '<rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>', href: '#' },
+            { label: 'YouTube', icon: '<path d="M22.54 6.42a2.78 2.78 0 00-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 00-1.95 1.96A29 29 0 001 12a29 29 0 00.46 5.58A2.78 2.78 0 003.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 001.95-1.95A29 29 0 0023 12a29 29 0 00-.46-5.58z"/><polygon points="9.75,15.02 15.5,12 9.75,8.98 9.75,15.02"/>', href: '#' },
+          ].map(s => (
+            <a href={s.href} aria-label={s.label} class="w-9 h-9 bg-warm-800 hover:bg-brand-500 rounded-lg flex items-center justify-center transition-colors">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" set:html={s.icon} />
+            </a>
+          ))}
+        </div>
+      </div>
+
+      <!-- Services -->
+      <div>
+        <h3 class="text-white font-semibold text-sm mb-5 flex items-center gap-2">
+          <span class="w-4 h-0.5 bg-brand-500 rounded-full inline-block"></span>
+          Our Services
+        </h3>
+        <ul class="space-y-2.5 text-sm">
+          {[
+            ['Household Shifting', '/services/household-shifting/'],
+            ['Office Relocation', '/services/office-relocation/'],
+            ['Car Transport', '/services/car-transport/'],
+            ['Bike Transport', '/services/bike-transport/'],
+            ['Warehouse Storage', '/services/storage/'],
+            ['International Moving', '/services/international/'],
+            ['Packing Services', '/services/packing/'],
+            ['Loading & Unloading', '/services/loading-unloading/'],
+          ].map(([label, href]) => (
+            <li>
+              <a href={href} class="hover:text-brand-400 transition-colors flex items-center gap-1.5">
+                <svg class="w-3 h-3 text-brand-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/></svg>
+                {label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <!-- States & Cities -->
+      <div>
+        <h3 class="text-white font-semibold text-sm mb-5 flex items-center gap-2">
+          <span class="w-4 h-0.5 bg-brand-500 rounded-full inline-block"></span>
+          Locations We Serve
+        </h3>
+
+        <div class="space-y-4 text-sm">
+          <!-- AP -->
+          <div>
+            <a href="/packers-movers-andhra-pradesh/" class="text-brand-400 font-semibold text-xs uppercase tracking-wider hover:text-brand-300">
+              Andhra Pradesh
+            </a>
+            <div class="flex flex-wrap gap-x-2 gap-y-1 mt-1.5">
+              {apCities.map(c => (
+                <a href={`/${c.slug}/`} class="text-warm-400 hover:text-brand-400 transition-colors">{c.name}</a>
+              ))}
+              <a href="/packers-movers-andhra-pradesh/" class="text-brand-500 hover:text-brand-400">+12 more →</a>
+            </div>
+          </div>
+          <!-- TS -->
+          <div>
+            <a href="/packers-movers-telangana/" class="text-brand-400 font-semibold text-xs uppercase tracking-wider hover:text-brand-300">Telangana</a>
+            <div class="flex flex-wrap gap-x-2 gap-y-1 mt-1.5">
+              {tsCities.map(c => (
+                <a href={`/${c.slug}/`} class="text-warm-400 hover:text-brand-400 transition-colors">{c.name}</a>
+              ))}
+              <a href="/packers-movers-telangana/" class="text-brand-500 hover:text-brand-400">+9 more →</a>
+            </div>
+          </div>
+          <!-- TN -->
+          <div>
+            <a href="/packers-movers-tamil-nadu/" class="text-brand-400 font-semibold text-xs uppercase tracking-wider hover:text-brand-300">Tamil Nadu</a>
+            <div class="flex flex-wrap gap-x-2 gap-y-1 mt-1.5">
+              {tnCities.map(c => (
+                <a href={`/${c.slug}/`} class="text-warm-400 hover:text-brand-400 transition-colors">{c.name}</a>
+              ))}
+              <a href="/packers-movers-tamil-nadu/" class="text-brand-500 hover:text-brand-400">+11 more →</a>
+            </div>
+          </div>
+          <!-- KA -->
+          <div>
+            <a href="/packers-movers-karnataka/" class="text-brand-400 font-semibold text-xs uppercase tracking-wider hover:text-brand-300">Karnataka</a>
+            <div class="flex flex-wrap gap-x-2 gap-y-1 mt-1.5">
+              {kaCities.map(c => (
+                <a href={`/${c.slug}/`} class="text-warm-400 hover:text-brand-400 transition-colors">{c.name}</a>
+              ))}
+              <a href="/packers-movers-karnataka/" class="text-brand-500 hover:text-brand-400">+10 more →</a>
+            </div>
+          </div>
+          <!-- KL -->
+          <div>
+            <a href="/packers-movers-kerala/" class="text-brand-400 font-semibold text-xs uppercase tracking-wider hover:text-brand-300">Kerala</a>
+            <div class="flex flex-wrap gap-x-2 gap-y-1 mt-1.5">
+              {klCities.map(c => (
+                <a href={`/${c.slug}/`} class="text-warm-400 hover:text-brand-400 transition-colors">{c.name}</a>
+              ))}
+              <a href="/packers-movers-kerala/" class="text-brand-500 hover:text-brand-400">+5 more →</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Links + CTA -->
+      <div>
+        <h3 class="text-white font-semibold text-sm mb-5 flex items-center gap-2">
+          <span class="w-4 h-0.5 bg-brand-500 rounded-full inline-block"></span>
+          Quick Links
+        </h3>
+        <ul class="space-y-2.5 text-sm mb-8">
+          {[
+            ['About Us', '/about/'],
+            ['Blog', '/blog/'],
+            ['Get Free Quote', '/get-quote/'],
+            ['Contact Us', '/contact/'],
+            ['Privacy Policy', '/privacy-policy/'],
+            ['Terms of Service', '/terms/'],
+            ['Sitemap', '/sitemap.xml'],
+          ].map(([label, href]) => (
+            <li>
+              <a href={href} class="hover:text-brand-400 transition-colors flex items-center gap-1.5">
+                <svg class="w-3 h-3 text-brand-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/></svg>
+                {label}
+              </a>
+            </li>
+          ))}
+        </ul>
+
+        <!-- CTA Box -->
+        <div class="bg-brand-500/10 border border-brand-500/20 rounded-2xl p-4">
+          <p class="text-white font-semibold text-sm mb-3">Ready to Move?</p>
+          <p class="text-xs text-warm-400 mb-4">Get your free shifting estimate in 60 seconds.</p>
+          <a href="/get-quote/" class="btn-primary text-xs w-full justify-center rounded-xl py-2.5">Get Free Quote →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Trust Badges Row -->
+  <div class="border-t border-warm-800">
+    <div class="container py-6">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+        {[
+          ['50,000+', 'Happy Customers'],
+          ['75', 'Cities Served'],
+          ['5', 'States Covered'],
+          ['4.8★', 'Google Rating'],
+        ].map(([num, label]) => (
+          <div>
+            <div class="text-brand-400 font-display text-xl font-bold">{num}</div>
+            <div class="text-xs text-warm-500">{label}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Bar -->
+  <div class="border-t border-warm-800">
+    <div class="container py-5 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-warm-500">
+      <p>© {new Date().getFullYear()} PackersHub. All rights reserved. | Licensed & Insured Packers & Movers, South India.</p>
+      <div class="flex items-center gap-1">
+        <svg class="w-3 h-3 text-brand-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/></svg>
+        GST Verified | IBA Approved | ISO Certified
+      </div>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,15 @@
+User-agent: *
+Allow: /
+
+# Block admin and private paths
+Disallow: /admin/
+Disallow: /private/
+Disallow: /_astro/
+Disallow: /api/
+
+# Sitemaps
+Sitemap: https://packershub.in/sitemap-index.xml
+Sitemap: https://packershub.in/sitemap-0.xml
+
+# Crawl delay for bots
+Crawl-delay: 1

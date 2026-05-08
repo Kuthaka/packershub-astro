@@ -1,0 +1,60 @@
+---
+// src/pages/thank-you.astro
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { CONTACT } from '../data/cities';
+---
+
+<BaseLayout
+  title="Thank You! | PackersHub — We'll Contact You Shortly"
+  description="Thank you for contacting PackersHub. Our team will call you within 30 minutes with your free moving quote."
+  canonical="https://packershub.in/thank-you/"
+  noindex={true}
+>
+  <Header slot="header" />
+
+  <section class="min-h-[80vh] flex items-center bg-hero-gradient">
+    <div class="container text-center max-w-2xl mx-auto">
+      <div class="w-20 h-20 bg-brand-gradient rounded-full flex items-center justify-center mx-auto mb-6 shadow-brand-lg reveal">
+        <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
+        </svg>
+      </div>
+
+      <div class="section-badge mb-5 reveal reveal-delay-1">Submission Received!</div>
+      <h1 class="font-display text-h1 text-warm-950 mb-4 reveal reveal-delay-2">Thank You!</h1>
+      <p class="text-body-lg text-warm-600 mb-8 reveal reveal-delay-3 text-pretty">
+        We've received your moving request. Our team will contact you within <strong>30 minutes</strong> with a detailed, transparent quote. Check your phone — we'll call or WhatsApp you shortly!
+      </p>
+
+      <!-- What's next -->
+      <div class="card p-7 text-left mb-8 reveal reveal-delay-3">
+        <h2 class="font-semibold text-warm-950 mb-4">What Happens Next?</h2>
+        <div class="space-y-4">
+          {[
+            { step: '1', text: 'Our team reviews your request and checks availability.' },
+            { step: '2', text: 'We call/WhatsApp you within 30 minutes with a detailed quote.' },
+            { step: '3', text: 'You confirm the booking and we assign your move coordinator.' },
+            { step: '4', text: 'Our professional crew arrives on your scheduled date — ready to move!' },
+          ].map(s => (
+            <div class="flex items-start gap-4">
+              <div class="w-8 h-8 bg-brand-500 rounded-full flex items-center justify-center text-white text-sm font-bold flex-shrink-0">{s.step}</div>
+              <p class="text-sm text-warm-700 pt-1.5">{s.text}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <p class="text-sm text-warm-500 mb-6 reveal reveal-delay-4">Need urgent help? Call or WhatsApp us directly:</p>
+
+      <div class="flex flex-wrap gap-3 justify-center reveal reveal-delay-4">
+        <a href="tel:+917731074075" class="btn-primary-lg">📞 Call Us Now</a>
+        <a href={CONTACT.whatsappLink('Hi! I just submitted a quote request.')} target="_blank" rel="noopener" class="btn-whatsapp px-8 py-4 text-base rounded-2xl">💬 WhatsApp Us</a>
+        <a href="/" class="btn-outline px-8 py-4 text-base rounded-2xl">Go to Homepage</a>
+      </div>
+    </div>
+  </section>
+
+  <Footer slot="footer" />
+</BaseLayout>

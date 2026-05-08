@@ -1,0 +1,461 @@
+---
+// src/pages/index.astro — PackersHub Premium Homepage
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { CONTACT, BUSINESS, states, cities } from '../data/cities';
+
+const featuredCities = cities.filter(c =>
+  ['packers-movers-hyderabad','packers-movers-bengaluru','packers-movers-chennai',
+   'packers-movers-visakhapatnam','packers-movers-kochi','packers-movers-vijayawada',
+   'packers-movers-coimbatore','packers-movers-madurai'].includes(c.slug)
+);
+
+const services = [
+  { icon: '🏠', title: 'Household Shifting', desc: 'Complete home relocation with expert packing, safe transit, and door-step delivery.', href: '/services/household-shifting/', color: '#f97316' },
+  { icon: '🏢', title: 'Office Relocation', desc: 'Minimal downtime corporate moves with IT equipment handling & furniture assembly.', href: '/services/office-relocation/', color: '#6174f4' },
+  { icon: '🚗', title: 'Car Transport', desc: 'Enclosed & open carrier transport for all car types — sedans, SUVs, luxury & vintage.', href: '/services/car-transport/', color: '#10b981' },
+  { icon: '🏍️', title: 'Bike Transport', desc: 'Safe two-wheeler shifting with secure fastening and insurance coverage.', href: '/services/bike-transport/', color: '#ec4899' },
+  { icon: '📦', title: 'Warehouse Storage', desc: '24/7 secured climate-controlled storage facilities with CCTV surveillance.', href: '/services/storage/', color: '#f59e0b' },
+  { icon: '🌍', title: 'International Moving', desc: 'End-to-end overseas relocation with customs assistance and door delivery.', href: '/services/international/', color: '#06b6d4' },
+];
+
+const whyUs = [
+  { icon: '✅', title: 'Licensed & Insured', desc: 'Fully registered, GST-compliant company with comprehensive transit insurance on every move.' },
+  { icon: '📍', title: '75 Cities Coverage', desc: 'Widest network across South India — 5 states, 75 cities, one trusted name.' },
+  { icon: '⚡', title: 'Fast & On-Time', desc: 'Guaranteed delivery timelines. GPS-tracked vehicles. Real-time shipment updates.' },
+  { icon: '💰', title: 'Transparent Pricing', desc: 'No hidden charges. Itemized quotes. Fixed-price guarantee after survey.' },
+  { icon: '🛡️', title: 'Damage-Free Guarantee', desc: 'Multi-layer packing using international-grade materials. Zero damage policy.' },
+  { icon: '📞', title: '24/7 Support', desc: 'Dedicated move coordinator from booking to delivery. Always reachable.' },
+];
+
+const testimonials = [
+  { name: 'Ravi Kumar', city: 'Hyderabad', rating: 5, text: 'Shifted from Hyderabad to Bengaluru. The team was professional, punctual, and every item arrived safely. Highly recommend PackersHub!', avatar: 'RK' },
+  { name: 'Priya Sharma', city: 'Chennai', rating: 5, text: 'Excellent service! The packers took great care of my antique furniture. Price was very reasonable. Will definitely use again.', avatar: 'PS' },
+  { name: 'Venkat Rao', city: 'Visakhapatnam', rating: 5, text: 'Best packers and movers in Vizag! Moved office of 50+ employees seamlessly. Zero damage, completed in time.', avatar: 'VR' },
+  { name: 'Anita Menon', city: 'Kochi', rating: 5, text: 'Used PackersHub for shifting from Kochi to Chennai. Amazing packing, GPS tracking, on-time delivery. 10/10!', avatar: 'AM' },
+];
+
+const stats = [
+  { value: 50000, suffix: '+', label: 'Happy Customers' },
+  { value: 75, suffix: '', label: 'Cities Served' },
+  { value: 5, suffix: '', label: 'South Indian States' },
+  { value: 7, suffix: '+', label: 'Years Experience' },
+];
+
+const faqs = [
+  { q: 'How much do packers and movers cost in South India?', a: 'Moving costs vary by distance, volume, and services. Local moves typically cost ₹3,000–₹20,000. Interstate moves range from ₹10,000–₹75,000+. Call us for a free, accurate quote based on your specific requirements.' },
+  { q: 'Is transit insurance available?', a: 'Yes! PackersHub includes comprehensive transit insurance on all moves. Your goods are protected against damage, loss, or theft during transit at no extra charge on select plans.' },
+  { q: 'How far in advance should I book?', a: 'We recommend booking 7–15 days in advance for standard moves. Weekend and month-end slots fill quickly. Emergency moves can be arranged within 24–48 hours.' },
+  { q: 'Do you provide packing materials?', a: 'Yes, we supply all packing materials including corrugated boxes, bubble wrap, foam sheets, stretch film, and wooden crates for fragile items — all included in our packing service.' },
+  { q: 'What items cannot be moved?', a: 'We cannot transport flammable liquids, explosives, perishable foods, illegal substances, or live plants/animals. All other household and office items are handled professionally.' },
+  { q: 'How do I track my shipment?', a: 'All PackersHub trucks are GPS-tracked. Your dedicated move coordinator provides real-time updates. You can also call +917731074075 for instant status updates.' },
+];
+
+const schemaFAQ = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map(f => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+};
+---
+
+<BaseLayout
+  title="Best Packers and Movers in South India | PackersHub – 75 Cities, 5 States"
+  description="PackersHub is South India's most trusted packers and movers. Professional household shifting, office relocation, and vehicle transport across 75 cities in AP, Telangana, Tamil Nadu, Karnataka & Kerala. Free Quote: +91 77310 74075"
+  schema={schemaFAQ}
+>
+  <Header slot="header" />
+
+  <!-- ══════════════════════════════════════════
+       HERO SECTION
+  ══════════════════════════════════════════ -->
+  <section class="relative min-h-[88vh] flex items-center overflow-hidden bg-hero-gradient">
+    <!-- Background decoration -->
+    <div class="absolute inset-0 bg-grid opacity-60"></div>
+    <div class="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-brand-50/60 to-transparent"></div>
+    <div class="absolute -top-24 -right-24 w-96 h-96 bg-brand-200/30 rounded-full blur-3xl"></div>
+    <div class="absolute -bottom-24 -left-24 w-96 h-96 bg-navy-100/40 rounded-full blur-3xl"></div>
+
+    <div class="container relative z-10 py-20">
+      <div class="grid lg:grid-cols-2 gap-12 items-center">
+
+        <!-- Left Content -->
+        <div>
+          <div class="section-badge mb-6 reveal">
+            <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5 2a1 1 0 011 1v1h1a1 1 0 010 2H6v1a1 1 0 01-2 0V6H3a1 1 0 010-2h1V3a1 1 0 011-1zm0 10a1 1 0 011 1v1h1a1 1 0 110 2H6v1a1 1 0 11-2 0v-1H3a1 1 0 110-2h1v-1a1 1 0 011-1zm7-10a1 1 0 01.707.293l.121.121A5.001 5.001 0 0115 7v.764l1 .618A5 5 0 0113.764 17H10a5 5 0 01-2.236-9.618L9 6.764V7a5.001 5.001 0 011.172-3.586l.121-.121A1 1 0 0112 3z" clip-rule="evenodd"/></svg>
+            #1 Trusted Packers & Movers — South India
+          </div>
+
+          <h1 class="font-display text-fluid-3xl text-warm-950 mb-6 reveal reveal-delay-1">
+            Safe, Affordable<br/>
+            <span class="text-gradient">Moving Services</span><br/>
+            Across South India
+          </h1>
+
+          <p class="text-body-lg text-warm-600 mb-8 max-w-xl reveal reveal-delay-2 text-pretty">
+            Professional packers and movers serving <strong>75 cities</strong> across <strong>5 South Indian states</strong>. Household shifting, office relocation, vehicle transport — done right, every time.
+          </p>
+
+          <!-- Trust badges -->
+          <div class="flex flex-wrap gap-3 mb-8 reveal reveal-delay-3">
+            {['✓ GST Invoice', '✓ Transit Insurance', '✓ GPS Tracked', '✓ 50,000+ Moves'].map(b => (
+              <span class="tag-brand text-xs font-semibold">{b}</span>
+            ))}
+          </div>
+
+          <!-- CTA Buttons -->
+          <div class="flex flex-wrap gap-3 mb-10 reveal reveal-delay-4">
+            <a href="/get-quote/" class="btn-primary-lg">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+              Get Free Quote
+            </a>
+            <a href={CONTACT.whatsappLink('Hi PackersHub! I need a quote for moving.')} target="_blank" rel="noopener" class="btn-whatsapp px-8 py-4 text-base rounded-2xl">
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+              WhatsApp Us
+            </a>
+            <a href="tel:+917731074075" class="btn-outline px-8 py-4 text-base rounded-2xl">
+              📞 Call Now
+            </a>
+          </div>
+
+          <!-- Stats Row -->
+          <div class="grid grid-cols-4 gap-4 reveal reveal-delay-5">
+            {stats.map(s => (
+              <div class="text-center">
+                <div class="font-display text-2xl font-bold text-warm-950">
+                  <span data-target={s.value} data-suffix={s.suffix}>0</span>
+                </div>
+                <div class="text-xs text-warm-500 mt-0.5">{s.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <!-- Right — Quick Quote Form -->
+        <div class="reveal reveal-delay-2">
+          <div class="card p-7 lg:p-8 relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-32 h-32 bg-brand-50 rounded-full -translate-y-16 translate-x-16"></div>
+            <div class="relative">
+              <h2 class="font-display text-2xl text-warm-950 mb-1">Get Instant Quote</h2>
+              <p class="text-sm text-warm-500 mb-6">Free estimate in under 60 seconds</p>
+
+              <form action="/get-quote/" method="GET" class="space-y-4">
+                <div class="grid grid-cols-2 gap-3">
+                  <div>
+                    <label class="label">Moving From *</label>
+                    <input type="text" name="from" placeholder="City / Area" class="input text-sm" required />
+                  </div>
+                  <div>
+                    <label class="label">Moving To *</label>
+                    <input type="text" name="to" placeholder="City / Area" class="input text-sm" required />
+                  </div>
+                </div>
+                <div>
+                  <label class="label">Move Type *</label>
+                  <select name="type" class="select text-sm" required>
+                    <option value="">Select move type</option>
+                    <option>Household Shifting</option>
+                    <option>Office Relocation</option>
+                    <option>Car Transport</option>
+                    <option>Bike Transport</option>
+                    <option>Warehouse Storage</option>
+                    <option>International Moving</option>
+                  </select>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                  <div>
+                    <label class="label">Property Size</label>
+                    <select name="size" class="select text-sm">
+                      <option value="">Select size</option>
+                      <option>1 BHK</option>
+                      <option>2 BHK</option>
+                      <option>3 BHK</option>
+                      <option>4 BHK+</option>
+                      <option>Villa / Independent</option>
+                      <option>Office Space</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="label">Preferred Date</label>
+                    <input type="date" name="date" class="input text-sm" />
+                  </div>
+                </div>
+                <div>
+                  <label class="label">Your Phone *</label>
+                  <input type="tel" name="phone" placeholder="+91 XXXXX XXXXX" class="input text-sm" required pattern="[0-9+\-\s]+" />
+                </div>
+                <button type="submit" class="btn-primary w-full py-4 text-base rounded-xl">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+                  Get My Free Quote
+                </button>
+              </form>
+              <p class="text-center text-xs text-warm-400 mt-3">🔒 Your data is private & secure. No spam.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       STATS BANNER
+  ══════════════════════════════════════════ -->
+  <section class="bg-brand-500 text-white py-8">
+    <div class="container">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+        {[
+          ['50,000+', 'Successful Moves'],
+          ['75', 'Cities Covered'],
+          ['5 States', 'South India'],
+          ['4.8 / 5★', '12,500+ Reviews'],
+        ].map(([n, l]) => (
+          <div class="reveal">
+            <div class="font-display text-2xl lg:text-3xl font-bold">{n}</div>
+            <div class="text-brand-100 text-sm mt-1">{l}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       SERVICES
+  ══════════════════════════════════════════ -->
+  <section class="section bg-warm-50">
+    <div class="container">
+      <div class="text-center mb-12 reveal">
+        <div class="section-badge mb-4">Our Services</div>
+        <h2 class="section-title mb-4">Complete Moving Solutions</h2>
+        <p class="section-subtitle">From packing your favorite coffee mug to relocating an entire corporate campus — we handle it all.</p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {services.map((s, i) => (
+          <a href={s.href} class={`card p-7 group reveal reveal-delay-${i + 1} cursor-pointer`}>
+            <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl mb-5 group-hover:scale-110 transition-transform" style={`background:${s.color}18; border: 1.5px solid ${s.color}30`}>
+              {s.icon}
+            </div>
+            <h3 class="font-semibold text-lg text-warm-950 mb-2 group-hover:text-brand-600 transition-colors">{s.title}</h3>
+            <p class="text-sm text-warm-600 leading-relaxed">{s.desc}</p>
+            <div class="flex items-center gap-1.5 mt-4 text-brand-600 text-sm font-semibold">
+              Learn more
+              <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       STATES COVERAGE
+  ══════════════════════════════════════════ -->
+  <section class="section bg-white">
+    <div class="container">
+      <div class="text-center mb-12 reveal">
+        <div class="section-badge mb-4">Coverage Map</div>
+        <h2 class="section-title mb-4">We Serve Across South India</h2>
+        <p class="section-subtitle">5 states · 75 cities · One trusted packers & movers network</p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-5">
+        {Object.values(states).map((state, i) => {
+          const stateCities = cities.filter(c => c.state === state.code).slice(0, 6);
+          return (
+            <div class={`rounded-2xl border p-6 hover:shadow-hover hover:-translate-y-1 transition-all duration-300 reveal reveal-delay-${i+1}`} style={`border-color:${state.color}30; background:${state.color}06`}>
+              <div class="w-12 h-12 rounded-xl flex items-center justify-center text-white font-bold mb-4" style={`background:${state.color}`}>
+                {state.code}
+              </div>
+              <h3 class="font-semibold text-warm-950 mb-1">{state.name}</h3>
+              <p class="text-xs text-warm-500 mb-4">{state.cities} cities • Capital: {state.capital}</p>
+              <div class="flex flex-wrap gap-1 mb-4">
+                {stateCities.map(c => (
+                  <a href={`/${c.slug}/`} class="text-xs px-2 py-0.5 rounded-full bg-white border hover:border-brand-300 hover:text-brand-600 transition-colors text-warm-600 shadow-sm">
+                    {c.name}
+                  </a>
+                ))}
+              </div>
+              <a href={`/${state.slug}/`} class="text-sm font-semibold flex items-center gap-1" style={`color:${state.color}`}>
+                View All Cities
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+              </a>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       WHY CHOOSE US
+  ══════════════════════════════════════════ -->
+  <section class="section bg-warm-950 text-white relative overflow-hidden">
+    <div class="absolute inset-0 bg-dots opacity-10"></div>
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-brand-500/10 rounded-full blur-3xl"></div>
+
+    <div class="container relative">
+      <div class="text-center mb-12 reveal">
+        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest bg-brand-500/20 text-brand-400 border border-brand-500/30 mb-4">Why PackersHub</div>
+        <h2 class="font-display text-h2 text-white mb-4">What Makes Us Different</h2>
+        <p class="text-body-lg text-warm-400 max-w-prose-wide mx-auto">We're not just movers. We're relocation experts who treat your belongings like our own.</p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {whyUs.map((item, i) => (
+          <div class={`bg-warm-800/50 rounded-2xl p-6 border border-warm-700 hover:border-brand-500/40 transition-all duration-300 reveal reveal-delay-${i+1}`}>
+            <div class="text-3xl mb-4">{item.icon}</div>
+            <h3 class="font-semibold text-white text-lg mb-2">{item.title}</h3>
+            <p class="text-sm text-warm-400 leading-relaxed">{item.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       FEATURED CITIES
+  ══════════════════════════════════════════ -->
+  <section class="section bg-brand-50">
+    <div class="container">
+      <div class="text-center mb-12 reveal">
+        <div class="section-badge mb-4">Popular Locations</div>
+        <h2 class="section-title mb-4">Top Cities We Serve</h2>
+        <p class="section-subtitle">Expert local knowledge in South India's biggest metro cities.</p>
+      </div>
+
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        {featuredCities.map((city, i) => (
+          <a href={`/${city.slug}/`} class={`card p-5 group text-center reveal reveal-delay-${(i % 4) + 1}`}>
+            <div class="w-12 h-12 bg-brand-gradient rounded-2xl flex items-center justify-center text-white font-bold text-sm mx-auto mb-3 group-hover:scale-110 transition-transform shadow-brand">
+              {city.name.substring(0, 2).toUpperCase()}
+            </div>
+            <h3 class="font-semibold text-warm-950 group-hover:text-brand-600 transition-colors">{city.name}</h3>
+            <p class="text-xs text-warm-500 mt-1">{city.state} • {city.district}</p>
+            <div class="mt-3 text-brand-600 text-xs font-semibold group-hover:underline">View Details →</div>
+          </a>
+        ))}
+      </div>
+
+      <div class="text-center mt-8">
+        <a href="/packers-movers-andhra-pradesh/" class="btn-outline">View All 75 Cities →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       TESTIMONIALS
+  ══════════════════════════════════════════ -->
+  <section class="section bg-white">
+    <div class="container">
+      <div class="text-center mb-12 reveal">
+        <div class="section-badge mb-4">Customer Reviews</div>
+        <h2 class="section-title mb-4">What Our Customers Say</h2>
+        <div class="flex items-center justify-center gap-2 mb-2">
+          <div class="stars"><svg viewBox="0 0 20 20" class="w-5 h-5 fill-amber-400"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg></div>
+          <span class="font-display text-2xl text-warm-950">4.8</span>
+          <span class="text-warm-500 text-sm">/ 5 from 12,500+ reviews</span>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {testimonials.map((t, i) => (
+          <div class={`card p-6 reveal reveal-delay-${i+1}`}>
+            <div class="flex items-center gap-0.5 mb-4">
+              {Array(t.rating).fill(0).map(() => (
+                <svg class="w-4 h-4 fill-amber-400" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+              ))}
+            </div>
+            <p class="text-sm text-warm-700 leading-relaxed mb-5 italic">"{t.text}"</p>
+            <div class="flex items-center gap-3">
+              <div class="w-9 h-9 bg-brand-gradient rounded-full flex items-center justify-center text-white text-xs font-bold shadow-brand">{t.avatar}</div>
+              <div>
+                <div class="font-semibold text-warm-950 text-sm">{t.name}</div>
+                <div class="text-xs text-warm-500">{t.city}</div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       PROCESS
+  ══════════════════════════════════════════ -->
+  <section class="section bg-brand-500 text-white relative overflow-hidden">
+    <div class="absolute inset-0 bg-grid opacity-10"></div>
+    <div class="container relative">
+      <div class="text-center mb-12 reveal">
+        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest bg-white/20 border border-white/30 mb-4">How It Works</div>
+        <h2 class="font-display text-h2 mb-4">Move in 4 Simple Steps</h2>
+        <p class="text-brand-100 max-w-xl mx-auto">From your first call to the last box unpacked — we make moving simple.</p>
+      </div>
+
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-6">
+        {[
+          { step: '01', title: 'Get Free Quote', desc: 'Call us or fill the form. Receive an instant estimate or book a free home survey.' },
+          { step: '02', title: 'Schedule Your Move', desc: 'Pick your preferred date. We assign your dedicated move coordinator.' },
+          { step: '03', title: 'Expert Packing', desc: 'Our professional team arrives, packs everything safely using premium materials.' },
+          { step: '04', title: 'Safe Delivery', desc: 'GPS-tracked transit. Real-time updates. On-time door-to-door delivery.' },
+        ].map((s, i) => (
+          <div class={`text-center reveal reveal-delay-${i+1}`}>
+            <div class="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center font-display text-2xl font-bold mx-auto mb-5 border border-white/30">{s.step}</div>
+            <h3 class="font-semibold text-lg mb-2">{s.title}</h3>
+            <p class="text-brand-100 text-sm leading-relaxed">{s.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       FAQ
+  ══════════════════════════════════════════ -->
+  <section class="section bg-white">
+    <div class="container max-w-4xl">
+      <div class="text-center mb-12 reveal">
+        <div class="section-badge mb-4">FAQ</div>
+        <h2 class="section-title mb-4">Frequently Asked Questions</h2>
+        <p class="section-subtitle">Everything you need to know about shifting with PackersHub.</p>
+      </div>
+
+      <div class="space-y-3">
+        {faqs.map((faq, i) => (
+          <details class={`group card p-0 reveal reveal-delay-${i+1}`}>
+            <summary class="flex items-center justify-between gap-4 px-6 py-5 cursor-pointer list-none">
+              <h3 class="font-semibold text-warm-950 text-sm md:text-base">{faq.q}</h3>
+              <svg class="w-5 h-5 text-brand-500 flex-shrink-0 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+            </summary>
+            <div class="px-6 pb-5 text-sm text-warm-600 leading-relaxed border-t border-warm-100 pt-4">
+              {faq.a}
+            </div>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       CTA BANNER
+  ══════════════════════════════════════════ -->
+  <section class="section-sm bg-mesh-orange">
+    <div class="container">
+      <div class="bg-white rounded-3xl p-10 md:p-14 text-center shadow-card border border-warm-100 reveal">
+        <div class="section-badge mb-5">Start Your Move Today</div>
+        <h2 class="font-display text-h2 text-warm-950 mb-4">Ready to Move?<br/><span class="text-gradient">Get a Free Quote in 60 Seconds</span></h2>
+        <p class="text-warm-600 text-body-lg mb-8 max-w-xl mx-auto">Join 50,000+ happy families who chose PackersHub for their relocation. Professional, safe, and affordable moving services across South India.</p>
+        <div class="flex flex-wrap gap-3 justify-center">
+          <a href="/get-quote/" class="btn-primary-lg">Get Free Quote</a>
+          <a href={CONTACT.whatsappLink()} target="_blank" rel="noopener" class="btn-whatsapp px-8 py-4 text-base rounded-2xl">WhatsApp Now</a>
+          <a href="tel:+917731074075" class="btn-outline px-8 py-4 text-base rounded-2xl">📞 {CONTACT.phoneDisplay}</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <Footer slot="footer" />
+</BaseLayout>

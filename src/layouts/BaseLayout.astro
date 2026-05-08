@@ -1,0 +1,265 @@
+---
+// src/layouts/BaseLayout.astro
+// Full SEO, Schema.org, OG, Twitter, GEO meta tags
+
+import '../styles/global.css';
+
+export interface Props {
+  title: string;
+  description: string;
+  canonical?: string;
+  ogImage?: string;
+  schema?: object | object[];
+  noindex?: boolean;
+  cityName?: string;
+  stateName?: string;
+  breadcrumbs?: { name: string; url: string }[];
+}
+
+const {
+  title,
+  description,
+  canonical = Astro.url.href,
+  ogImage = 'https://packershub.in/og-default.jpg',
+  schema,
+  noindex = false,
+  cityName,
+  stateName,
+  breadcrumbs,
+} = Astro.props;
+
+const siteName = 'PackersHub';
+const phone = '+917731074075';
+
+// Build breadcrumb schema
+const breadcrumbSchema = breadcrumbs ? {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://packershub.in/' },
+    ...breadcrumbs.map((b, i) => ({ '@type': 'ListItem', position: i + 2, name: b.name, item: b.url })),
+  ],
+} : null;
+
+const schemas = [
+  // Organization schema
+  {
+    '@context': 'https://schema.org',
+    '@type': ['MovingCompany', 'LocalBusiness'],
+    '@id': 'https://packershub.in/#organization',
+    name: 'PackersHub',
+    alternateName: 'Packers Hub',
+    url: 'https://packershub.in',
+    logo: 'https://packershub.in/logo.png',
+    image: ogImage,
+    description: 'South India\'s trusted packers and movers serving 75 cities across Andhra Pradesh, Telangana, Tamil Nadu, Karnataka, and Kerala.',
+    telephone: phone,
+    email: 'info@packershub.in',
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: 'BV Nagar',
+      addressLocality: 'Nellore',
+      addressRegion: 'Andhra Pradesh',
+      postalCode: '524004',
+      addressCountry: 'IN',
+    },
+    geo: { '@type': 'GeoCoordinates', latitude: 14.4426, longitude: 79.9865 },
+    openingHoursSpecification: [{
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
+      opens: '06:00', closes: '22:00',
+    }],
+    priceRange: '₹₹',
+    aggregateRating: {
+      '@type': 'AggregateRating',
+      ratingValue: '4.8',
+      reviewCount: '12500',
+      bestRating: '5',
+      worstRating: '1',
+    },
+    areaServed: ['Andhra Pradesh','Telangana','Tamil Nadu','Karnataka','Kerala'],
+    sameAs: [
+      'https://www.facebook.com/packershub',
+      'https://www.instagram.com/packershub',
+      'https://twitter.com/packershub',
+    ],
+  },
+  // WebSite schema
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    '@id': 'https://packershub.in/#website',
+    url: 'https://packershub.in',
+    name: 'PackersHub',
+    publisher: { '@id': 'https://packershub.in/#organization' },
+    potentialAction: {
+      '@type': 'SearchAction',
+      target: { '@type': 'EntryPoint', urlTemplate: 'https://packershub.in/search/?q={search_term_string}' },
+      'query-input': 'required name=search_term_string',
+    },
+  },
+  ...(breadcrumbSchema ? [breadcrumbSchema] : []),
+  ...(schema ? (Array.isArray(schema) ? schema : [schema]) : []),
+].filter(Boolean);
+---
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+  <!-- Primary Meta -->
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={canonical} />
+  {noindex && <meta name="robots" content="noindex,nofollow" />}
+  {!noindex && <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />}
+
+  <!-- GEO Tags -->
+  <meta name="geo.region" content={stateName === 'Tamil Nadu' ? 'IN-TN' : stateName === 'Karnataka' ? 'IN-KA' : stateName === 'Kerala' ? 'IN-KL' : stateName === 'Telangana' ? 'IN-TG' : 'IN-AP'} />
+  <meta name="geo.placename" content={cityName || 'Nellore, Andhra Pradesh'} />
+  <meta name="geo.position" content="14.4426;79.9865" />
+  <meta name="ICBM" content="14.4426, 79.9865" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content={canonical} />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:image" content={ogImage} />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:site_name" content={siteName} />
+  <meta property="og:locale" content="en_IN" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@packershub" />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={ogImage} />
+
+  <!-- PWA / Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="icon" type="image/png" href="/favicon.png" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="manifest" href="/site.webmanifest" />
+  <meta name="theme-color" content="#f97316" />
+  <meta name="msapplication-TileColor" content="#f97316" />
+
+  <!-- Fonts — Preload -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" media="print" onload="this.media='all'" />
+
+  <!-- AIO — AI search optimization hints -->
+  <meta name="author" content="PackersHub" />
+  <meta name="publisher" content="PackersHub" />
+  <meta name="category" content="Moving & Relocation Services" />
+  <meta name="coverage" content="South India" />
+  <meta name="distribution" content="Global" />
+  <meta name="language" content="English" />
+  <meta name="rating" content="General" />
+  <meta name="revisit-after" content="7 days" />
+
+  <!-- Schema.org JSON-LD -->
+  {schemas.map(s => (
+    <script type="application/ld+json" set:html={JSON.stringify(s)} />
+  ))}
+
+  <!-- Google Tag Manager (replace GTM-XXXXXXX) -->
+  <!-- <script type="text/partytown">
+    (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-XXXXXXX');
+  </script> -->
+</head>
+
+<body class="bg-white text-warm-900 antialiased">
+  <!-- GTM noscript -->
+  <!-- <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-XXXXXXX" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript> -->
+
+  <slot name="header" />
+  <main id="main-content">
+    <slot />
+  </main>
+  <slot name="footer" />
+
+  <!-- Floating Buttons -->
+  <div class="no-print" id="float-btns">
+    <!-- WhatsApp -->
+    <a
+      href="https://wa.me/917731074075?text=Hello%20PackersHub!%20I%20need%20packers%20and%20movers."
+      target="_blank"
+      rel="noopener noreferrer"
+      class="float-btn bg-[#25D366] hover:bg-[#1da851]"
+      style="bottom: 100px; right: 20px;"
+      aria-label="Chat on WhatsApp"
+      title="WhatsApp Us"
+    >
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="white">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+      </svg>
+    </a>
+    <!-- Call -->
+    <a
+      href="tel:+917731074075"
+      class="float-btn bg-brand-500 hover:bg-brand-600"
+      style="bottom: 30px; right: 20px;"
+      aria-label="Call PackersHub"
+      title="Call Us Now"
+    >
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="white">
+        <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
+      </svg>
+    </a>
+  </div>
+
+  <!-- Intersection Observer for scroll animations -->
+  <script>
+    const observer = new IntersectionObserver(
+      (entries) => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } }),
+      { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
+    );
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // Sticky header shadow
+    const header = document.getElementById('site-header');
+    if (header) {
+      window.addEventListener('scroll', () => {
+        header.classList.toggle('shadow-md', window.scrollY > 20);
+      }, { passive: true });
+    }
+
+    // Counter animation
+    function animateCounter(el: Element) {
+      const target = parseInt(el.getAttribute('data-target') || '0', 10);
+      const duration = 2000;
+      const start = performance.now();
+      const update = (time: number) => {
+        const elapsed = time - start;
+        const progress = Math.min(elapsed / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        el.textContent = Math.round(eased * target).toLocaleString('en-IN') + (el.getAttribute('data-suffix') || '');
+        if (progress < 1) requestAnimationFrame(update);
+      };
+      requestAnimationFrame(update);
+    }
+
+    const counterObserver = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          animateCounter(e.target);
+          counterObserver.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.5 });
+    document.querySelectorAll('[data-target]').forEach(el => counterObserver.observe(el));
+  </script>
+</body>
+</html>
