@@ -76,11 +76,17 @@ const schemaFAQ = {
   <section class="relative min-h-[88vh] flex items-center overflow-hidden bg-hero-gradient">
     <!-- Background decoration -->
     <div class="absolute inset-0 bg-grid opacity-60"></div>
-    <div class="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-brand-50/60 to-transparent"></div>
+    
+    <!-- Hero Background Image (Desktop) -->
+    <div class="absolute inset-0 hidden lg:block overflow-hidden">
+      <img src="/images/main.jpg" alt="PackersHub Moving Services" class="w-full h-full object-cover opacity-40" />
+      <div class="absolute inset-0 bg-white/5"></div>
+    </div>
+
     <div class="absolute -top-24 -right-24 w-96 h-96 bg-brand-200/30 rounded-full blur-3xl"></div>
     <div class="absolute -bottom-24 -left-24 w-96 h-96 bg-navy-100/40 rounded-full blur-3xl"></div>
 
-    <div class="container relative z-10 py-20">
+    <div class="container relative z-10 pt-8 pb-20">
       <div class="grid lg:grid-cols-2 gap-12 items-center">
 
         <!-- Left Content -->
@@ -105,6 +111,14 @@ const schemaFAQ = {
             {['✓ GST Invoice', '✓ Transit Insurance', '✓ GPS Tracked', '✓ 50,000+ Moves'].map(b => (
               <span class="tag-brand text-xs font-semibold">{b}</span>
             ))}
+          </div>
+
+          <!-- Mobile Hero Image -->
+          <div class="lg:hidden mb-8 reveal reveal-delay-3">
+            <div class="relative">
+              <div class="absolute inset-0 bg-brand-500/10 rounded-2xl rotate-2 scale-[1.02]"></div>
+              <img src="/images/main.jpg" alt="PackersHub Moving" class="relative z-10 rounded-2xl shadow-xl w-full aspect-video object-cover border-2 border-white" />
+            </div>
           </div>
 
           <!-- CTA Buttons -->
@@ -136,7 +150,7 @@ const schemaFAQ = {
         </div>
 
         <!-- Right — Quick Quote Form -->
-        <div class="reveal reveal-delay-2">
+        <div class="reveal reveal-delay-2 lg:-mt-12">
           <div class="card p-7 lg:p-8 relative overflow-hidden">
             <div class="absolute top-0 right-0 w-32 h-32 bg-brand-50 rounded-full -translate-y-16 translate-x-16"></div>
             <div class="relative">
