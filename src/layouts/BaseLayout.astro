@@ -116,6 +116,7 @@ const schemas = [
   <link rel="canonical" href={canonical} />
   {noindex && <meta name="robots" content="noindex,nofollow" />}
   {!noindex && <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />}
+  <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap-index.xml" />
 
   <!-- GEO Tags -->
   <meta name="geo.region" content={stateName === 'Tamil Nadu' ? 'IN-TN' : stateName === 'Karnataka' ? 'IN-KA' : stateName === 'Kerala' ? 'IN-KL' : stateName === 'Telangana' ? 'IN-TG' : 'IN-AP'} />
@@ -149,11 +150,10 @@ const schemas = [
   <meta name="theme-color" content="#f97316" />
   <meta name="msapplication-TileColor" content="#f97316" />
 
-  <!-- Fonts — Preload -->
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" media="print" onload="this.media='all'" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 
   <!-- AIO — AI search optimization hints -->
   <meta name="author" content="PackersHub" />
@@ -170,19 +170,20 @@ const schemas = [
     <script type="application/ld+json" set:html={JSON.stringify(s)} />
   ))}
 
-  <!-- Google Tag Manager (replace GTM-XXXXXXX) -->
-  <!-- <script type="text/partytown">
-    (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-XXXXXXX');
-  </script> -->
+  <!-- Google Tag Manager -->
+  <script is:inline>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-WFRMBCS5');</script>
+  <!-- End Google Tag Manager -->
 </head>
 
 <body class="bg-white text-warm-900 antialiased">
-  <!-- GTM noscript -->
-  <!-- <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-XXXXXXX" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript> -->
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WFRMBCS5"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
 
   <slot name="header" />
   <main id="main-content">
